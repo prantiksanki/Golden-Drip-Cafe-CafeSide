@@ -46,12 +46,12 @@
             margin-bottom: 1rem;
         }
         .btn-primary {
-            background-color: #ff7f50; /* Coral button */
+            background-color: #e03c3c; /* Coral button */
             border: none;
             margin-top: auto; /* Pushes the button to the bottom */
         }
         .btn-primary:hover {
-            background-color: #e67340; /* Darker coral on hover */
+            background-color: #f59292fc; /* Darker coral on hover */
         }
     </style>
 </head>
@@ -71,7 +71,7 @@
                                 <p class="card-text"><%= item.description || 'No description available.' %></p>
                                 <p class="card-text"><strong>Price:</strong> <%= item.price || 'N/A' %></p>
                                 <p class="card-text"><strong>Available Quantity:</strong> <%= item.quantity || 'N/A' %></p>
-                                <a href="/" class="btn btn-primary">See More</a>
+                                <a href="/" class="btn btn-primary" id = "<%= item._id %>" onclick="removeMenu('<%= item._id %>')">Remove Dish</a>
                             </div>
                         </div>
                     </div>
@@ -83,6 +83,33 @@
             <% } %>
         </div>
     </div>
+        
+    <script>
+       async function removeMenu(itemId) {
+            
+        const card = document.getElementById(itemId).closest('.card');
+        if (card) {
+          card.remove();
+        }
+
+    try {
+        const response = await fetch('/removeMenu', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ itemId }),
+        });
+        
+        // if (!response.ok) {
+        //     alert('Error removing item from the menu.');
+        // }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to remove the menu item.');
+    }
+}
+      
+    </script>
+
 
     <%- include('./components/dependencies_script') %>
 </body>
